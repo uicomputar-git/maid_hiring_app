@@ -1,0 +1,31 @@
+{% extends "base.html" %}{% block title %}Messages | MaidConnect{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+  <div><h1 class="h2 mb-1">Messages</h1><p class="text-muted mb-0">Chat with any active maid or employer, regardless of hiring status.</p></div>
+  <a class="btn btn-primary" href="{{ url_for('new_message') }}">＋ New chat</a>
+</div>
+
+<h2 class="h4 mt-4">Direct conversations</h2>
+<div class="row g-3">
+{% for item in direct_items %}
+<div class="col-12"><div class="card"><div class="card-body d-flex flex-wrap align-items-center justify-content-between gap-3">
+<div><h3 class="h5 mb-1">{{ item.other_user.full_name }} <span class="badge text-bg-light">{{ item.other_user.role|title }}</span>{% if item.unread_count %} <span class="badge text-bg-primary">{{ item.unread_count }} unread</span>{% endif %}</h3>
+<div class="small text-muted">{{ item.other_user.email or item.other_user.mobile }}</div>
+<div class="mt-2">{% if item.last_message %}<span class="text-muted">Latest:</span> {{ item.last_message.body|truncate(100) }}{% else %}<span class="text-muted">No messages yet. Start chatting.</span>{% endif %}</div></div>
+<a class="btn btn-primary" href="{{ url_for('direct_chat', conversation_id=item.conversation.id) }}">Open chat</a>
+</div></div></div>
+{% else %}<div class="col-12"><div class="alert alert-info">No direct conversations yet. Select New chat to message any maid or employer.</div></div>{% endfor %}
+</div>
+
+<h2 class="h4 mt-4">Hiring request chats</h2>
+<div class="row g-3">
+{% for item in conversations %}
+<div class="col-12"><div class="card"><div class="card-body d-flex flex-wrap align-items-center justify-content-between gap-3">
+<div><h3 class="h5 mb-1">{{ item.other_user.full_name }} <span class="badge text-bg-secondary">{{ item.request.status }}</span>{% if item.unread_count %} <span class="badge text-bg-primary">{{ item.unread_count }} unread</span>{% endif %}</h3>
+<div class="small text-muted">Request #{{ item.request.id }} · {{ item.request.job_location }} · ₹{{ item.request.salary_offered }}/month</div>
+<div class="mt-2">{% if item.last_message %}<span class="text-muted">Latest:</span> {{ item.last_message.body|truncate(100) }}{% else %}<span class="text-muted">No messages yet.</span>{% endif %}</div></div>
+<a class="btn btn-outline-primary" href="{{ url_for('chat', req_id=item.request.id) }}">Open request chat</a>
+</div></div></div>
+{% else %}<div class="col-12"><p class="text-muted">No hiring request conversations.</p></div>{% endfor %}
+</div>
+{% endblock %}

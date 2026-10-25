@@ -1,0 +1,6 @@
+{% extends "base.html" %}{% block content %}<h1 class="h2">Hire {{ maid.full_name }}</h1><p class="text-muted">Your contact details are shared only after a request is accepted.</p>
+<form method="post" class="form-panel row g-3"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+<div class="col-12"><label class="form-label">Job location (locality/city; no need for public display)</label><input class="form-control" name="job_location" required></div>
+<div class="col-md-6"><label class="form-label">Monthly salary offered (₹)</label><input class="form-control" type="number" name="salary_offered" min="0" required value="{{ maid.maid_profile.expected_salary }}"></div>
+<div class="col-md-6"><label class="form-label">Work timings</label><input class="form-control" name="work_timings" required placeholder="e.g. 8 AM - 1 PM"></div>
+<div class="col-12"><label class="form-label">Job description / duties</label><textarea class="form-control" name="job_description"></textarea></div><div class="col-12"><button class="btn btn-primary">Send request</button></div></form>{% endblock %}

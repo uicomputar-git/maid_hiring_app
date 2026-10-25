@@ -1,0 +1,14 @@
+{% extends "base.html" %}{% block title %}Maid Registration{% endblock %}{% block content %}
+<h1 class="h2 mb-4">Maid registration</h1><form method="post" enctype="multipart/form-data" class="row g-3 form-panel">
+<input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+{% for label,name,type,required in [('Full name','full_name','text',true),('Mobile number','mobile','tel',true),('Email (optional)','email','email',false),('Password (min 8 characters)','password','password',true),('Confirm password','confirm_password','password',true),('Age','age','number',true),('Address (kept private)','address','text',true),('City','city','text',true),('State','state','text',true),('Experience (years)','experience_years','number',true),('Expected monthly salary (₹)','expected_salary','number',true),('Working hours','working_hours','text',true),('Languages known','languages','text',false),('Available from (YYYY-MM-DD)','available_from','date',false)] %}
+<div class="col-md-6"><label class="form-label">{{ label }}</label><input class="form-control" name="{{ name }}" type="{{ type }}" {% if required %}required{% endif %} {% if name in ['age','experience_years','expected_salary'] %}min="0"{% endif %}></div>
+{% endfor %}
+<div class="col-md-6"><label class="form-label">Gender</label><select class="form-select" name="gender"><option>Female</option><option>Male</option><option>Other</option></select></div>
+<div class="col-md-6"><label class="form-label">Job type</label><select class="form-select" name="job_type">{% for j in job_types %}<option>{{ j }}</option>{% endfor %}</select></div>
+<div class="col-md-6"><label class="form-label">Profile photo (optional)</label><input class="form-control" type="file" name="photo" accept=".jpg,.jpeg,.png,.webp"></div>
+<div class="col-md-6"><label class="form-label">Skills</label>{% for s in skills %}<div class="form-check"><input class="form-check-input" type="checkbox" name="skills" value="{{ s }}"><label class="form-check-label">{{ s }}</label></div>{% endfor %}</div>
+<div class="col-12"><label class="form-label">Previous experience</label><textarea class="form-control" name="previous_experience" rows="2"></textarea></div>
+<div class="col-md-6"><label class="form-label">Reference details (optional)</label><input class="form-control" name="reference_details"></div>
+<div class="col-12 form-check ms-2"><input class="form-check-input" type="checkbox" name="consent_public_profile" value="yes" checked><label class="form-check-label">I consent to show my non-sensitive profile details in search results.</label></div>
+<div class="col-12"><button class="btn btn-primary">Create maid account</button></div></form>{% endblock %}

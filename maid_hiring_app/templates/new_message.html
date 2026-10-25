@@ -1,0 +1,18 @@
+{% extends "base.html" %}{% block title %}New Chat | MaidConnect{% endblock %}
+{% block content %}
+<h1 class="h2 mb-2">Start a new chat</h1>
+<p class="text-muted">Choose any active maid or employer. A hiring request is not required, and chat stays available after a job is completed.</p>
+<form method="get" class="row g-2 mb-4">
+  <div class="col-md-6"><input class="form-control" name="q" value="{{ term }}" placeholder="Search by name or email"></div>
+  <div class="col-md-3"><select class="form-select" name="role"><option value="all" {% if role_filter=='all' %}selected{% endif %}>All users</option><option value="maid" {% if role_filter=='maid' %}selected{% endif %}>Maids</option><option value="employer" {% if role_filter=='employer' %}selected{% endif %}>Employers</option></select></div>
+  <div class="col-md-3"><button class="btn btn-outline-primary w-100">Search users</button></div>
+</form>
+<div class="list-group">
+{% for person in people %}
+<div class="list-group-item d-flex align-items-center justify-content-between flex-wrap gap-2">
+  <div><strong>{{ person.full_name }}</strong><span class="badge text-bg-light ms-2">{{ person.role|title }}</span><div class="small text-muted">{{ person.email or person.mobile }}</div></div>
+  <form method="post" action="{{ url_for('new_message', q=term, role=role_filter) }}"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><input type="hidden" name="user_id" value="{{ person.id }}"><button class="btn btn-primary btn-sm">Message</button></form>
+</div>
+{% else %}<div class="alert alert-info">No active users found. Try another search or role.</div>{% endfor %}
+</div>
+{% endblock %}

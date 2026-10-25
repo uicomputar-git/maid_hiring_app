@@ -1,0 +1,8 @@
+{% extends "base.html" %}{% block title %}Employer Registration{% endblock %}{% block content %}
+<h1 class="h2 mb-4">Employer registration</h1><form method="post" class="row g-3 form-panel"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+{% for label,name,type in [('Full name','full_name','text'),('Mobile number','mobile','tel'),('Email','email','email'),('Password (min 8 characters)','password','password'),('Confirm password','confirm_password','password'),('House address (private)','house_address','text'),('City','city','text'),('State','state','text'),('Monthly budget (₹)','budget','number'),('Expected working hours','expected_hours','text'),('Preferred joining date','preferred_joining_date','date')] %}
+<div class="col-md-6"><label class="form-label">{{ label }}</label><input class="form-control" name="{{ name }}" type="{{ type }}" required {% if name=='budget' %}min="0"{% endif %}></div>{% endfor %}
+<div class="col-md-6"><label class="form-label">Preferred maid type</label><select class="form-select" name="preferred_maid_type"><option>Any</option>{% for j in job_types %}<option>{{ j }}</option>{% endfor %}</select></div>
+<div class="col-md-6"><label class="form-label">Required services</label>{% for s in skills %}<div class="form-check"><input class="form-check-input" type="checkbox" name="required_services" value="{{ s }}"><label class="form-check-label">{{ s }}</label></div>{% endfor %}</div>
+<div class="col-12"><label class="form-label">Additional requirements</label><textarea class="form-control" name="additional_requirements"></textarea></div>
+<div class="col-12"><button class="btn btn-primary">Create employer account</button></div></form>{% endblock %}

@@ -1,0 +1,4 @@
+{% extends "base.html" %}{% block title %}Login{% endblock %}{% block content %}
+<div class="form-panel mx-auto" style="max-width:520px"><h1 class="h2 mb-3">Login</h1><p class="text-muted">Use your registered mobile number or email.</p>
+<form method="post" class="vstack gap-3"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><div><label class="form-label">Mobile or email</label><input class="form-control" name="identity" required></div><div><label class="form-label">Password</label><input class="form-control" type="password" name="password" required></div><button class="btn btn-primary">Login</button></form>
+<hr><p class="mb-1">New maid? <a href="{{ url_for('register_maid') }}">Register here</a></p><p>Hiring help? <a href="{{ url_for('register_employer') }}">Register as employer</a></p><small class="text-muted">Password reset requires a verified email/SMS provider and is not enabled in this demo.</small></div>{% endblock %}
